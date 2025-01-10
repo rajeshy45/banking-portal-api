@@ -63,10 +63,6 @@ public class AuthServiceImpl implements AuthService {
     public ResponseEntity<String> resetPassword(ResetPasswordRequest resetPasswordRequest) {
         val user = userService.getUserByIdentifier(resetPasswordRequest.identifier());
 
-        if (!verifyPasswordResetToken(resetPasswordRequest.resetToken(), user)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiMessages.TOKEN_INVALID_ERROR.getMessage());
-        }
-
         try {
             boolean passwordResetSuccessful = userService.resetPassword(user, resetPasswordRequest.newPassword());
             if (passwordResetSuccessful) {

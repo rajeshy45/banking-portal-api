@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webapp.bankingportal.dto.AmountRequest;
+import com.webapp.bankingportal.dto.CheckPinResponse;
 import com.webapp.bankingportal.dto.FundTransferRequest;
 import com.webapp.bankingportal.dto.PinRequest;
 import com.webapp.bankingportal.dto.PinUpdateRequest;
@@ -31,10 +32,10 @@ public class AccountController {
     @GetMapping("/pin/check")
     public ResponseEntity<String> checkAccountPIN() {
         val isPINValid = accountService.isPinCreated(LoggedinUser.getAccountNumber());
-        val response = isPINValid ? ApiMessages.PIN_CREATED.getMessage()
-                : ApiMessages.PIN_NOT_CREATED.getMessage();
+        val response = isPINValid ? new CheckPinResponse(true, ApiMessages.PIN_CREATED.getMessage())
+                : new CheckPinResponse(false, ApiMessages.PIN_NOT_CREATED.getMessage());
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(JsonUtil.toJson(response));
     }
 
     @PostMapping("/pin/create")
