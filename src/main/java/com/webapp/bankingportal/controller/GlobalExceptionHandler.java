@@ -11,14 +11,11 @@ import org.springframework.web.context.request.WebRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.webapp.bankingportal.exception.AccountDoesNotExistException;
 import com.webapp.bankingportal.exception.FundTransferException;
-import com.webapp.bankingportal.exception.GeolocationException;
 import com.webapp.bankingportal.exception.InsufficientBalanceException;
 import com.webapp.bankingportal.exception.InvalidAmountException;
 import com.webapp.bankingportal.exception.InvalidTokenException;
-import com.webapp.bankingportal.exception.InvalidOtpException;
 import com.webapp.bankingportal.exception.InvalidPinException;
 import com.webapp.bankingportal.exception.NotFoundException;
-import com.webapp.bankingportal.exception.OtpRetryLimitExceededException;
 import com.webapp.bankingportal.exception.PasswordResetException;
 import com.webapp.bankingportal.exception.UnauthorizedException;
 import com.webapp.bankingportal.exception.UserInvalidException;
@@ -42,11 +39,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
-    @ExceptionHandler(GeolocationException.class)
-    public ResponseEntity<String> handleGeolocationException(GeolocationException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
-    }
-
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(
             IllegalArgumentException ex) {
@@ -62,11 +54,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidAmountException.class)
     public ResponseEntity<String> handleInvalidAmountException(InvalidAmountException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
-    }
-
-    @ExceptionHandler(InvalidOtpException.class)
-    public ResponseEntity<String> handleInvalidOtpException(InvalidOtpException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 
     @ExceptionHandler(InvalidPinException.class)
@@ -87,12 +74,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(NotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
-
-    @ExceptionHandler(OtpRetryLimitExceededException.class)
-    public ResponseEntity<String> handleOtpRetryLimitExceededException(
-            OtpRetryLimitExceededException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(PasswordResetException.class)

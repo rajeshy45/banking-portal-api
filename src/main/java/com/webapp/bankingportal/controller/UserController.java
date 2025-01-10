@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.webapp.bankingportal.dto.LoginRequest;
-import com.webapp.bankingportal.dto.OtpRequest;
-import com.webapp.bankingportal.dto.OtpVerificationRequest;
 import com.webapp.bankingportal.entity.User;
 import com.webapp.bankingportal.exception.InvalidTokenException;
 import com.webapp.bankingportal.service.UserService;
@@ -37,18 +35,6 @@ public class UserController {
             throws InvalidTokenException {
 
         return userService.login(loginRequest, request);
-    }
-
-    @PostMapping("/generate-otp")
-    public ResponseEntity<String> generateOtp(@RequestBody OtpRequest otpRequest) {
-        return userService.generateOtp(otpRequest);
-    }
-
-    @PostMapping("/verify-otp")
-    public ResponseEntity<String> verifyOtpAndLogin(@RequestBody OtpVerificationRequest otpVerificationRequest)
-            throws InvalidTokenException {
-
-        return userService.verifyOtpAndLogin(otpVerificationRequest);
     }
 
     @PostMapping("/update")

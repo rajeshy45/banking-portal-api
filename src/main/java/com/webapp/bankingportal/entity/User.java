@@ -12,7 +12,7 @@ import jakarta.validation.constraints.NotEmpty;
 
 import lombok.Data;
 
-@Entity
+@Entity(name = "usr")
 @Data
 public class User {
     @Id

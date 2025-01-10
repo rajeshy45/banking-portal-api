@@ -13,7 +13,7 @@ import jakarta.persistence.ManyToOne;
 
 import lombok.Data;
 
-@Entity
+@Entity(name = "tn")
 @Data
 public class Transaction {
     @Id
