@@ -2,12 +2,16 @@ package com.webapp.bankingportal;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.webapp.bankingportal.dto.AmountRequest;
+import com.webapp.bankingportal.dto.CheckPinResponse;
 import com.webapp.bankingportal.dto.FundTransferRequest;
 import com.webapp.bankingportal.dto.PinRequest;
 import com.webapp.bankingportal.dto.PinUpdateRequest;
@@ -16,30 +20,40 @@ import com.webapp.bankingportal.util.JsonUtil;
 
 import lombok.val;
 
+@SpringBootTest(classes = BankingportalApplication.class)
+@AutoConfigureMockMvc
 public class AccountControllerTests extends BaseTest {
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @Test
     public void test_pin_check_without_pin() throws Exception {
         val userDetails = createAndLoginUser();
+
+        val response = new CheckPinResponse(false, ApiMessages.PIN_NOT_CREATED.getMessage());
 
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/account/pin/check")
                 .header("Authorization", "Bearer " + userDetails.get("token")))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content()
-                        .string(ApiMessages.PIN_NOT_CREATED.getMessage()));
+                        .string(JsonUtil.toJson(response)));
     }
 
     @Test
     public void test_pin_check_with_pin() throws Exception {
         val userDetails = createAndLoginUserWithPin();
 
+        val response = new CheckPinResponse(true, ApiMessages.PIN_CREATED.getMessage());
+                ;
+
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/account/pin/check")
                 .header("Authorization", "Bearer " + userDetails.get("token")))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content()
-                        .string(ApiMessages.PIN_CREATED.getMessage()));
+                        .string(JsonUtil.toJson(response)));
     }
 
     @Test
